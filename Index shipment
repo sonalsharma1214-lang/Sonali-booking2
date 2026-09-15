@@ -1,0 +1,286 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sonali - Booking</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: auto;
+      display: flex;
+      gap: 25px;
+      align-items: flex-start;
+    }
+
+    /* Booking box */
+    .booking-box {
+      flex: 1;
+      background: white;
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #229ED9;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #229ED9;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .note {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    /* QR box */
+    .qr-box {
+      width: 280px;
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .qr-box h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .qr-code {
+      width: 210px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .qr-text {
+      margin-top: 15px;
+      color: #666;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .booking-box,
+      .qr-box {
+        width: 100%;
+      }
+
+      .qr-box {
+        order: 2;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Booking Form -->
+    <div class="booking-box">
+
+      <h1>Sonali</h1>
+
+      <p class="subtitle">
+        Booking Appointment
+      </p>
+
+      <form id="bookingForm">
+
+        <label for="name">Your Name</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter your name"
+          required
+        >
+
+        <label for="phone">Contact Number</label>
+        <input
+          type="tel"
+          id="phone"
+          placeholder="Enter contact number"
+          required
+        >
+
+        <label for="date">Select Date</label>
+        <input
+          type="date"
+          id="date"
+          required
+        >
+
+        <label for="time">Select Time</label>
+        <input
+          type="time"
+          id="time"
+          required
+        >
+
+        <label for="duration">Select Duration</label>
+
+        <select id="duration" required>
+          <option value="">Choose duration</option>
+          <option value="30 Minutes">30 Minutes</option>
+          <option value="60 Minutes">60 Minutes</option>
+          <option value="90 Minutes">90 Minutes</option>
+          <option value="120 Minutes">120 Minutes</option>
+        </select>
+
+        <button type="submit">
+          Confirm Booking on Telegram
+        </button>
+
+      </form>
+
+      <p class="note">
+        Booking requests are sent to Telegram @Sonal_0101
+      </p>
+
+    </div>
+
+
+    <!-- QR Code -->
+    <div class="qr-box">
+
+      <h2>Scan QR Code</h2>
+
+      <img
+        src="qr-code.png"
+        alt="Payment QR Code"
+        class="qr-code"
+      >
+
+      <p class="qr-text">
+        Scan the QR code using your payment app.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    // Minimum date = today
+    const dateInput = document.getElementById("date");
+
+    const today = new Date()
+      .toISOString()
+      .split("T")[0];
+
+    dateInput.min = today;
+
+
+    // Telegram booking
+    document
+      .getElementById("bookingForm")
+      .addEventListener("submit", function(e) {
+
+        e.preventDefault();
+
+        const name =
+          document.getElementById("name").value.trim();
+
+        const phone =
+          document.getElementById("phone").value.trim();
+
+        const date =
+          document.getElementById("date").value;
+
+        const time =
+          document.getElementById("time").value;
+
+        const duration =
+          document.getElementById("duration").value;
+
+
+        const message =
+          "Hello Sonali, I would like to make a booking.\n\n" +
+          "Name: " + name + "\n" +
+          "Contact: " + phone + "\n" +
+          "Date: " + date + "\n" +
+          "Time: " + time + "\n" +
+          "Duration: " + duration;
+
+
+        const telegramURL =
+          "https://t.me/Sonal_0101?text=" +
+          encodeURIComponent(message);
+
+
+        window.open(telegramURL, "_blank");
+
+      });
+
+  </script>
+
+</body>
+</html>
+```
